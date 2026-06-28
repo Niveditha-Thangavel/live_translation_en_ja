@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omni-Translate | Real-Time Voice Translation Dashboard</title>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="glass-bg"></div>
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon"></div>
+        <h1>Omni-Translate</h1>
+      </div>
+      <div class="system-status">
+        <span id="gpu-badge" class="badge">Checking WebGPU...</span>
+        <div class="status-indicator">
+          <span id="status-text">Connecting...</span>
+          <span id="status-dot" class="dot"></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+      
+      <!-- Visualizer & Control Panel -->
+      <section class="control-panel glass-card">
+        <div class="card-header">
+          <h2>Voice Capture</h2>
+          <span class="pulse-ring hide" id="recording-pulse"></span>
+        </div>
+        
+        <!-- Live Waveform Canvas -->
+        <div class="visualizer-container">
+          <canvas id="waveform-canvas"></canvas>
+          <div id="visualizer-placeholder">Visualizer Idle</div>
+        </div>
+
+        <!-- Mode & Language Selector -->
+        <div class="translation-settings">
+          <div class="setting-row">
+            <span class="label">Direction</span>
+            <div class="toggle-container">
+              <button id="btn-en-ja" class="toggle-btn active">English ➔ Japanese</button>
+              <button id="btn-ja-en" class="toggle-btn">日本語 ➔ English</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Control Buttons -->
+        <div class="action-buttons">
+          <button id="btn-listen" class="primary-btn" disabled>
+            <span class="btn-icon">🎙️</span>
+            <span class="btn-text">Initialize Models</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Captions & Transcripts Panel -->
+      <section class="transcript-panel glass-card">
+        <h2>Live Translation Captions</h2>
+        
+        <div class="captions-grid">
+          <!-- Input Source Transcript -->
+          <div class="caption-box source-box">
+            <h3>Original Speech (<span id="src-lang-label">English</span>)</h3>
+            <div id="text-src" class="transcript-text empty">Waiting for voice input...</div>
+          </div>
+
+          <!-- Translated Target Transcript -->
+          <div class="caption-box target-box">
+            <h3>Translated Translation (<span id="tgt-lang-label">Japanese</span>)</h3>
+            <div id="text-tgt" class="transcript-text empty">Waiting for translation...</div>
+          </div>
+        </div>
+
+        <!-- Latency Metrics Bar -->
+        <div class="metrics-bar">
+          <div class="metric">
+            <span class="metric-label">STT Latency:</span>
+            <span id="metric-stt" class="metric-value">-- ms</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">MT Latency:</span>
+            <span id="metric-mt" class="metric-value">-- ms</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">TTS Latency:</span>
+            <span id="metric-tts" class="metric-value">-- ms</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- System Loading / Resources Panel -->
+      <section class="loading-panel glass-card">
+        <h2>Local Neural Models (Cached On-Device)</h2>
+        <div class="loading-status-list">
+          
+          <!-- Whisper STT Progress -->
+          <div class="loading-item" id="loading-panel-whisper">
+            <div class="loading-info">
+              <span>Whisper-Tiny (ASR)</span>
+              <span id="progress-whisper-val" class="progress-val">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div id="progress-whisper-bar" class="progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Translation Model Progress -->
+          <div class="loading-item" id="loading-panel-small100">
+            <div class="loading-info">
+              <span>SMaLL-100 (MT)</span>
+              <span id="progress-small100-val" class="progress-val">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div id="progress-small100-bar" class="progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+  
+  <!-- App JavaScript Initialization -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
